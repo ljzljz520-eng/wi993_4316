@@ -31,9 +31,6 @@ func (m *Monitor) Start(ctx context.Context, id string, workers int) error {
 	go func() { wg.Wait(); close(done) }()
 	select {
 	case <-ctx.Done():
-		m.mu.Lock()
-		m.state[id] = "cancelled"
-		m.mu.Unlock()
 		return model.ErrCancelled
 	case <-done:
 		m.mu.Lock()
